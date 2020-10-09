@@ -135,10 +135,7 @@ namespace AppUIBasics.ControlPages
         */
     }
 
-    public class PurchaseViewModel : INotifyPropertyChanged
-#if INDEI
-        , Microsoft.UI.Xaml.Data.INotifyDataErrorInfo
-#endif
+    public class PurchaseViewModel : INotifyPropertyChanged , System.ComponentModel.INotifyDataErrorInfo
     {
         public PurchaseViewModel()
         {
@@ -324,7 +321,9 @@ namespace AppUIBasics.ControlPages
             }
         }      
 
-#if INDEI
+#if USING_CSWINRT
+        public event EventHandler<System.ComponentModel.DataErrorsChangedEventArgs> ErrorsChanged;
+#elif INDEI
         public event EventHandler<Microsoft.UI.Xaml.Data.DataErrorsChangedEventArgs> ErrorsChanged;
 #endif
 
@@ -389,7 +388,9 @@ namespace AppUIBasics.ControlPages
             }
 
             errors.AddRange(results);
-#if INDEI
+#if USING_CSWINRT
+            ErrorsChanged?.Invoke(this, new System.ComponentModel.DataErrorsChangedEventArgs(propertyName));
+#elif INDEI
             ErrorsChanged?.Invoke(this, new Microsoft.UI.Xaml.Data.DataErrorsChangedEventArgs(propertyName));
 #endif
         }
@@ -399,13 +400,19 @@ namespace AppUIBasics.ControlPages
             if (_errors.TryGetValue(propertyName, out var errors))
             {
                 errors.Clear();
-#if INDEI
+#if USING_CSWINRT
+                ErrorsChanged?.Invoke(this, new System.ComponentModel.DataErrorsChangedEventArgs(propertyName));
+#elif INDEI
                 ErrorsChanged?.Invoke(this, new Microsoft.UI.Xaml.Data.DataErrorsChangedEventArgs(propertyName));
 #endif
             }
         }
 
+#if USING_CSWINRT
+        public IEnumerable GetErrors(string propertyName)
+#elif INDEI
         public IEnumerable<object> GetErrors(string propertyName)
+#endif
         {
             return _errors[propertyName];
         }

@@ -3,7 +3,7 @@
   
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net5.0-windows10.0.18362.0</TargetFramework>
     <TargetPlatformVersion>10.0.18362.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.17134.0</TargetPlatformMinVersion>
     <DefineConstants>USING_CSWINRT</DefineConstants>
@@ -13,9 +13,9 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <SelfContained>true</SelfContained>
-    <RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
-    <RuntimeIdentifier Condition="'$(Platform)' == 'Win32'">win-x86</RuntimeIdentifier>
-    <RuntimeIdentifier Condition="'$(Platform)' != 'Win32'">win-$(Platform)</RuntimeIdentifier>
+    <RuntimeIdentifiers>win10-x86;win10-x64</RuntimeIdentifiers>
+    <RuntimeIdentifier Condition="'$(Platform)' == 'Win32'">win10-x86</RuntimeIdentifier>
+    <RuntimeIdentifier Condition="'$(Platform)' != 'Win32'">win10-$(Platform)</RuntimeIdentifier>
     
     <!-- If we prepend the PRI initial path, that will put "XamlControlsGallery.Desktop" as the prefix to
          resource URIs, which will be inconsistent with the resource URIs in the UWP version of this application.
@@ -45,6 +45,9 @@
     <Manifest Include="$(ApplicationManifest)" />
     <PackageReference Include="Microsoft.VCRTForwarders.140" />
     <PackageReference Include="Microsoft.WinUI" Condition="'$(WinUIPackageVersion)' != ''" />
+    <!-- use a new cswinrt and rosalyn that cswinrt needs -->
+    <PackageReference Include="Microsoft.Windows.CsWinRT" Version="0.2.0-prerelease.201009.2" /> <!-- 0.2.0-prerelease.201009.1 -->
+    <PackageReference Include="Microsoft.Net.Compilers.Toolset" Version="3.8.0-4.20472.6" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(IsInWinUIRepo)' != 'true'">
